@@ -9,26 +9,12 @@
         </style>
     </head>
     <body>
-        <div style='float: right'>
-          {% if session['user'] %}
-            {{ session['user'] }}
-            <form action="/logout" method="post">
-              <input type="submit" value="Log Out" />
-            </form>
-          {% else %}
-            <a href="login">login</a> | <a href="register">register</a>
-          {% endif %}
-        </div>
         <h2>
             <a href="/blog">Blog</a>
         </h2>
         <h2>
-            <a href="/newpost">New Post</a>
+            <a href="/new_post">New Post</a>
         </h2><br>
-		<div style="text-align:center"><h1>
-		Build A Blog
-		</h1>
-		</div>
 
         {% with messages = get_flashed_messages() %}
           {% if messages %}

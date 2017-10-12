@@ -1,10 +1,12 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template,session
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['DEBUG'] = True      # displays runtime errors in the browser, too
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:CelesSummo114@localhost:8889/build-a-blog'
 app.config['SQLALCHEMY_ECHO'] = True
+
+db = SQLAlchemy(app)
 
 class BlogPost(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
@@ -16,15 +18,18 @@ class BlogPost(db.Model):
 		self.body = body
 
 @app.route('/')
-def index:
+def index():
 	return redirect('/blog')
 
 @app.route('/blog', methods=['GET','POST'])
-def blog:
-	render_template('blog.html',posts=BlogPost.query.all())
-	
+def blog():
+	if request.args.get('id'):
+		id = request.args.get('id')
+		return render_template('blog.html',post=BlogPost.query.get(id),blogid=id)
+	else:
+		return render_template('blog.html',posts=BlogPost.query.all())
 @app.route('/new_post', methods=['GET','POST'])
-def new_post:
+def new_post():
 	if request.method == 'POST':
 		t_error = ""
 		b_error = ""
@@ -42,9 +47,12 @@ def new_post:
 		if error == False:
 			db.session.add(BlogPost(title=title,body=body))
 			db.session.commit()
-			redirect('/blog')
+			post = BlogPost.query.filter_by(title=title,body=body).first()
+			return redirect('./blog?id=' + str(post.id))
 		else:
-			render_template('new_post.html',bodyerror=b_error,titleerror=t_error)
+			return render_template('new_post.html',bodyerror=b_error,titleerror=t_error)
 			
 	else:
-		render_template('new_post.html')
+		return render_template('new_post.html')
+
+app.run()

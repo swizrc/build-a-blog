@@ -1,16 +1,30 @@
 {% extends "base.html" %}
 {% block content %}
-<hr>
 
-{% for post in posts %}
-	<h2>
+{% if blogid %}
+	<div style="text-align:center"><h1>
 	{{ post.title }}
-	<h2>
-	<br><br>
-	<h3>
+	</h1>
+	</div>
+	<h4>
 	{{ post.body }}
-	<h3>
+	</h4>
+{% else %}
+	<div style="text-align:center"><h1>
+	Build A Blog
+	</h1>
+	</div>
 	<hr>
-{% endfor %}
+	{% for post in posts %}
+		<h2><a href="./blog?id={{ post.id }}">
+		{{ post.title }}
+		</a>
+		</h2>
+		<h4>
+		{{ post.body }}
+		</h4>
+		<hr>
+	{% endfor %}
+{% endif %}
 
 {% endblock %}
