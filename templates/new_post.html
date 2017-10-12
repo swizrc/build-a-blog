@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="/new_post" method="post" id="blog">
+	<label for="title">Title of blog post:</label>
+	<br>
+	<input name="title" type="text" id="title" value="{{ title }}">
+	<br>
+	{% if titleerror == "empty" %}
+		<span style="color:red;"> Nothing is here</span>
+		<br>
+	{% endif %}
+	
+	<label for="body">Content of blog post:</label>
+	<br>
+	{% if bodyerror == "empty" %}
+		<span style="color:red;"> Nothing is here</span>
+		<br>
+	{% endif %}
+	<textarea name="body" form="blog" rows="4" cols="50">
+	{{ body }}</textarea>
+	<br>
+	<input type="submit" value="Post">
+</form>
+{% endblock %}
