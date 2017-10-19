@@ -12,10 +12,22 @@ class BlogPost(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
 	title = db.Column(db.String(120))
 	body = db.Column(db.Text)
+	owner_id = db.Column(db.Integer,db.ForeignKey('user.id'))
 	
-	def __init__(self, title, body):
+	def __init__(self, title, body, owner):
 		self.title = title
 		self.body = body
+		self.owner = owner
+		
+class User(db.Model):
+	id = db.Column(db.Integer,primary_key=True)
+	name = db.Column(db.String(30))
+	password = db.Column(db.String(15))
+	blogs = db.relationship('BlogPost', backref='owner')
+	
+	def __init__(self,name,password):
+		self.name = name
+		self.password = password
 
 @app.route('/')
 def index():
