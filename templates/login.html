@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Login</h2>
+
+<form action="/login" method="post">
+  <p><label>Username <input type="text" name="username"/></label>
+  	{% if usererror == "nonexist" %}
+		<span style="color:red;"> This user does not exist</span>
+	{% endif %}</p>
+  <p><label>Password <input type="password" name="password"/></label>
+  	{% if pwderror == "mismatch" %}
+		<span style="color:red;"> Invalid Password</span>
+	{% endif %}</p>
+  <p><input type="submit" value="Login"/></p>
+</form>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Register New Account</h2>
+<form action="/register" method="post">
+	<p><label>Username <input type="text" name="username"/></label>
+	{% if usererror == "empty" %}
+		<span style="color:red;"> Field left empty</span>
+	{% endif %}{% if usererror == "short" %}
+		<span style="color:red;"> Cannot be less than 3 characters</span>
+	{% endif %}{% if usererror == "existing" %}
+		<span style="color:red;"> Username is taken</span>
+	{% endif %}</p>
+	
+	<p><label>New Password <input type="password" name="password"/></label>
+	{% if pwderror == "short" %}
+		<span style="color:red;"> Cannot be less than 3 characters</span>
+	{% endif %}{% if pwderror == "empty" %}
+		<span style="color:red;"> Field left empty</span>
+	{% endif %}{% if pwderror == "mismatch" %}
+		<span style="color:red;"> Does not match </span>
+	{% endif %}</p>
+	
+	<p><label>Verify Password <input type="password" name="verify"/></label>
+	{% if vpwderror == "empty" %}
+		<span style="color:red;"> Field left empty</span>
+	{% endif %}{% if vpwderror == "mismatch" %}
+		<span style="color:red;"> Does not match </span>
+	{% endif %}</p>
+	<p><input type="submit" value="Register"/></p>
+</form>
+
+{% endblock %}

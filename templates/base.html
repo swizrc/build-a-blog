@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Build A Blog</title>
+        <title>Blogz!</title>
         <style type="text/css">
             .error {
                 color: red;
@@ -9,6 +9,16 @@
         </style>
     </head>
     <body>
+	    <div style='float: right'>
+          {% if session['user'] %}
+            {{ session['user'] }}
+            <form action="/logout" method="post">
+              <input type="submit" value="Log Out" />
+            </form>
+          {% else %}
+            <a href="login">login</a> | <a href="register">register</a>
+          {% endif %}
+        </div>
         <h2>
             <a href="/blog">Blog</a>
         </h2>
