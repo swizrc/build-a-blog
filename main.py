@@ -3,10 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['DEBUG'] = True      # displays runtime errors in the browser, too
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:CelesSummo114@localhost:8889/build-a-blog'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blogz:CelesSummo114@localhost:8889/blogz'
 app.config['SQLALCHEMY_ECHO'] = True
 
 db = SQLAlchemy(app)
+app.secret_key = 'y337kGcys&zP3B'
 
 class BlogPost(db.Model):
 	id = db.Column(db.Integer,primary_key=True)
@@ -54,7 +55,7 @@ def login():
 			session['user'] = username
 			return redirect('/')
 		else:
-			return render_template('login.html',usererror=usererror,pwderror=pwderror)
+			return render_template('login.html',usererror=usererror,pwderror=pwderror,name=username)
 	else:
 		return render_template('login.html')
 		
@@ -68,7 +69,7 @@ def register():
 		username = request.form['username']
 		password = request.form['password']
 		verify = request.form['verify']
-		if User.query.filter_by(name=username).first()
+		if User.query.filter_by(name=username).first():
 			usererror = "existing"
 			Error = True
 		if password != verify:
@@ -97,7 +98,7 @@ def register():
 			session['user'] = username
 			return redirect('/new_post')
 		else:
-			return render_template('register.html',usererror=usererror,pwderror=pwderror,vpwderror=vpwderror)
+			return render_template('register.html',usererror=usererror,pwderror=pwderror,vpwderror=vpwderror,name=username)
 	else:
 		return render_template('register.html')
 
@@ -108,13 +109,19 @@ def logout():
 
 @app.route('/')
 def index():
-	return redirect('/blog')
+	users = User.query.order_by(User.name).all()
+	return render_template('index.html',users=users)
 
 @app.route('/blog', methods=['GET','POST'])
 def blog():
 	if request.args.get('id'):
 		id = request.args.get('id')
 		return render_template('blog.html',post=BlogPost.query.get(id),blogid=id)
+	elif request.args.get('user'):
+		user_id = request.args.get('user')
+		user = User.query.get(user_id)
+		posts = BlogPost.query.filter_by(owner=user).all()
+		return render_template('blog.html',posts=posts,user=user)
 	else:
 		return render_template('blog.html',posts=BlogPost.query.all())
 		
@@ -126,6 +133,7 @@ def new_post():
 		error = False
 		title = request.form['title']
 		body = request.form['body']
+		owner = User.query.filter_by(name=session['user']).first()
 		
 		if len(title) == 0:
 			error = True
@@ -135,7 +143,8 @@ def new_post():
 			b_error="empty"
 			
 		if error == False:
-			db.session.add(BlogPost(title=title,body=body))
+			blogpost = BlogPost(title,body,owner)
+			db.session.add(blogpost)
 			db.session.commit()
 			post = BlogPost.query.filter_by(title=title,body=body).first()
 			return redirect('./blog?id=' + str(post.id))
@@ -145,4 +154,5 @@ def new_post():
 	else:
 		return render_template('new_post.html')
 
-app.run()
+if __name__ == "__main__":
+	app.run()

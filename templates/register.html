@@ -3,7 +3,7 @@
 
 <h2>Register New Account</h2>
 <form action="/register" method="post">
-	<p><label>Username <input type="text" name="username"/></label>
+	<p><label>Username <input type="text" name="username" value="{{ name }}"/></label>
 	{% if usererror == "empty" %}
 		<span style="color:red;"> Field left empty</span>
 	{% endif %}{% if usererror == "short" %}

@@ -20,21 +20,15 @@
           {% endif %}
         </div>
         <h2>
+            <a href="/">Home</a>
+        </h2>
+        <h2>
             <a href="/blog">Blog</a>
         </h2>
         <h2>
             <a href="/new_post">New Post</a>
-        </h2><br>
-
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <ul class=flashes>
-              {% for message in messages %}
-              <li>{{ message }}</li>
-              {% endfor %}
-            </ul>
-          {% endif %}
-        {% endwith %}
+        </h2>
+		<br>
 
         {% block content %}
         {% endblock %}

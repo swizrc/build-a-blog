@@ -6,9 +6,29 @@
 	{{ post.title }}
 	</h1>
 	</div>
-	<h4>
+	<h4 style="margin-left: 80px">
 	{{ post.body }}
 	</h4>
+	<span style="margin-left: 40px">Written by: <a href="./blog?user={{ post.owner.id }}">{{ post.owner.name }}</a></span>
+	<hr>
+{% elif user %}
+	<div style="text-align:center"><h1>
+	{{ user.name }}'s Blogz!
+	</h1>
+	</div>
+	<hr>
+	{% for post in posts %}
+		<h2><a href="./blog?id={{ post.id }}">
+		{{ post.title }}
+		</a>
+		</h2>
+		<h4 style="margin-left: 40px">
+		{{ post.body }}
+		</h4>
+		<br>
+		Written by: <a href="./blog?user={{ post.owner.id }}">{{ post.owner.name }}</a>
+		<hr>
+	{% endfor %}
 {% else %}
 	<div style="text-align:center"><h1>
 	Blogz!
@@ -20,9 +40,11 @@
 		{{ post.title }}
 		</a>
 		</h2>
-		<h4>
+		<h4 style="margin-left: 40px">
 		{{ post.body }}
 		</h4>
+		<br>
+		Written by: <a href="./blog?user={{ post.owner.id }}">{{ post.owner.name }}</a>
 		<hr>
 	{% endfor %}
 {% endif %}

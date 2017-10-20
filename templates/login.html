@@ -5,7 +5,7 @@
 <h2>Login</h2>
 
 <form action="/login" method="post">
-  <p><label>Username <input type="text" name="username"/></label>
+  <p><label>Username <input type="text" name="username" value="{{ name }}"/></label>
   	{% if usererror == "nonexist" %}
 		<span style="color:red;"> This user does not exist</span>
 	{% endif %}</p>
